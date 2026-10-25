@@ -35,7 +35,38 @@ Run commands from the repository root. Python 3.12+ and [uv](https://docs.astral
    - Dashboard: [http://127.0.0.1:8501](http://127.0.0.1:8501)
    - Interactive API docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-No preloaded corpus is required. Both services bind to `127.0.0.1`; **Ctrl+C** in the launcher terminal stops its child processes. Restart the backend after changing model settings in `.env`.
+No preloaded corpus is required. Both services bind to `127.0.0.1` by default; **Ctrl+C** in the launcher terminal stops its child processes. Restart the backend after changing model settings in `.env`.
+
+## Docker
+
+From the repository root, with Docker Desktop or a running Docker engine:
+
+```bash
+docker build -t indian-filings-rag:local .
+mkdir -p data experiments
+docker run --rm --env-file .env -p 127.0.0.1:8501:8501 \
+  --mount type=bind,src="$(pwd)/data",dst=/app/data \
+  --mount type=bind,src="$(pwd)/experiments",dst=/app/experiments \
+  indian-filings-rag:local
+```
+
+Open <http://localhost:8501>. If the existing local dashboard uses that port, stop it
+or change the host port before `:8501`. Docker forwards only Streamlit; FastAPI remains
+on loopback **inside the same container** and is called by the dashboard server. The
+existing local launcher still defaults to loopback for both services. `--ui-host 0.0.0.0`
+is used only by the container command to make the dashboard reachable.
+
+Runtime credentials come from `--env-file .env`; they are never copied into image layers.
+The data mount preserves report downloads, parsed records, and embedding caches. The
+experiments mount preserves evaluation results. No corpus is bundled; discover a company
+and prepare its report in the dashboard. Exchange downloads and Gemini calls still need
+outbound network access and valid credentials. If Linux bind mounts reject writes, add
+`--user "$(id -u):$(id -g)" -e HOME=/tmp` to `docker run`.
+
+The `Dockerfile` installs locked runtime dependencies, runs as a non-root user, and checks
+both services for health. The launcher handles Docker's SIGTERM and cleans up both children.
+`.dockerignore` excludes credentials, Git history, virtual environments, local corpus,
+experiments, model files, and caches. Image builds do not call Gemini or download filings.
 
 ## Use the dashboard
 

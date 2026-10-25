@@ -1,7 +1,8 @@
-"""Start FastAPI and Streamlit together locally; Ctrl+C stops both child processes."""
+"""Start FastAPI and Streamlit together locally or in Docker; stop both on exit."""
 
 import argparse
 import os
+import signal
 import subprocess
 import sys
 import time
@@ -13,6 +14,7 @@ def main():
     parser = argparse.ArgumentParser(description='Run the local filings dashboard and API')
     parser.add_argument('--api-port', type=int, default=8000)
     parser.add_argument('--ui-port', type=int, default=8501)
+    parser.add_argument('--ui-host', default='127.0.0.1', help='Use 0.0.0.0 inside Docker.')
     args = parser.parse_args()
     if not all(1 <= port <= 65535 for port in (args.api_port, args.ui_port)) or args.api_port == args.ui_port:
         parser.error('Choose two distinct ports between 1 and 65535.')
@@ -36,7 +38,7 @@ def main():
             'run',
             str(root / 'streamlit_app.py'),
             '--server.address',
-            '127.0.0.1',
+            args.ui_host,
             '--server.port',
             str(args.ui_port),
             '--server.headless',
@@ -44,6 +46,12 @@ def main():
         ],
     ]
     processes = []
+
+    def stop_on_signal(signum, frame):
+        """Route Docker SIGTERM through the existing child-process cleanup path."""
+        raise KeyboardInterrupt
+
+    signal.signal(signal.SIGTERM, stop_on_signal)
     try:
         for command in commands:
             processes.append(subprocess.Popen(command, cwd=root, env=environment))

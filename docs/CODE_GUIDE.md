@@ -67,6 +67,8 @@ The frontend never reads the model key. The backend loads `.env` at startup. Con
 | [.env.example](../.env.example) | Empty credential fields and compatible Gemini endpoint/model defaults. Actual `.env` is local and gitignored. |
 | [.streamlit/config.toml](../.streamlit/config.toml) | UI theme, disabled usage telemetry and rerun-on-save setting. |
 | [.gitignore](../.gitignore) | Excludes generated data, secrets, environments and experiments. |
+| [Dockerfile](../Dockerfile) | Installs locked runtime dependencies, starts both services, and checks their health. |
+| [.dockerignore](../.dockerignore) | Excludes secrets, local corpus, caches, and development files from image builds. |
 | [configs/pilot.json](../configs/pilot.json) | Optional fixed three-report seed sources for the original benchmark; not the searchable company universe. |
 | [benchmark/pilot.jsonl](../benchmark/pilot.jsonl) | Development questions, reference answers, filters and source-span evidence. |
 | [benchmark/README.md](../benchmark/README.md) | Label provenance, metric definitions and benchmark limits. |
@@ -89,11 +91,14 @@ No named functions or classes are defined in this file. Its module documentation
 
 [Open source](../scripts/run_dashboard.py)
 
-Start FastAPI and Streamlit together locally; Ctrl+C stops both child processes.
+Start FastAPI and Streamlit together locally or in Docker. The optional `--ui-host`
+controls dashboard binding; the API stays on loopback. Ctrl+C and Docker SIGTERM
+both reach the child-process cleanup path.
 
 | Symbol | Type | Responsibility |
 | --- | --- | --- |
 | `main` | Function | Launch both services with shared port settings and clean them up on exit. |
+| `main.stop_on_signal` | Function | Convert SIGTERM into the same cleanup path used for Ctrl+C. |
 
 ### `src/filings_rag/__init__.py`
 
