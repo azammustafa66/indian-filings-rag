@@ -17,6 +17,9 @@ dependencies = [
     "pandas>=2,<4",
 ]
 
+[project.scripts]
+filings = "filings_rag.cli:main"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
