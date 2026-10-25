@@ -1,0 +1,42 @@
+[
+  {
+    "filing_id": "hdfcbank-fy2025-annual-nse",
+    "company_id": "HDFCBANK",
+    "company_name": "HDFC Bank Limited",
+    "sector": "Banking",
+    "revision_label": "Revised; cover letter dated 2025-07-25 says leadership team profiles were updated",
+    "exchange": "NSE",
+    "filing_type": "annual_report",
+    "period_start": "2024-04-01",
+    "period_end": "2025-03-31",
+    "published_at": null,
+    "source_url": "https://www.nseindia.com/companies-listing/corporate-filings-annual-reports",
+    "attachment_url": "https://nsearchives.nseindia.com/annual_reports/AR_27115_HDFCBANK_2024_2025_U_25072025220054.pdf"
+  },
+  {
+    "filing_id": "infosys-fy2025-annual-nse",
+    "company_id": "INFY",
+    "company_name": "Infosys Limited",
+    "sector": "IT services",
+    "exchange": "NSE",
+    "filing_type": "annual_report",
+    "period_start": "2024-04-01",
+    "period_end": "2025-03-31",
+    "published_at": null,
+    "source_url": "https://www.nseindia.com/companies-listing/corporate-filings-announcements",
+    "attachment_url": "https://nsearchives.nseindia.com/corporate/Infosys_02062025154237_infosys-ar-2025.pdf"
+  },
+  {
+    "filing_id": "maruti-fy2025-annual-nse",
+    "company_id": "MARUTI",
+    "company_name": "Maruti Suzuki India Limited",
+    "sector": "Automotive manufacturing",
+    "exchange": "NSE",
+    "filing_type": "annual_report",
+    "period_start": "2024-04-01",
+    "period_end": "2025-03-31",
+    "published_at": null,
+    "source_url": "https://www.nseindia.com/companies-listing/corporate-filings-annual-reports",
+    "attachment_url": "https://nsearchives.nseindia.com/annual_reports/AR_27293_MARUTI_2024_2025_A_05082025210558.pdf"
+  }
+]
